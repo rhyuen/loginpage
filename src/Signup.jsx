@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Confirmation from "./SignupConfirmation.jsx";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -10,22 +11,34 @@ class Signup extends Component {
     passwordConfirmation: "",
     isPasswordValid: false,
     isPasswordMatch: false,
-    isPasswordVisible: false
+    isPasswordVisible: false,
+    isConfirmationVisible: false,
+    isUsernameDoubleVisible: false
   };
 
-  handleInputChange = name => e => {
-    e.preventDefault();
+  handleInputChange = e => {
+    let currInputValue = e.currentTarget.value;
+    let currInputName = e.currentTarget.name;
     this.setState(prevState => {
-      return {
-        ...prevState,
-        [name]: e.currentTarget.value
-      };
+      let change = {};
+      switch (currInputName) {
+        case "username":
+          change = { username: currInputValue };
+          break;
+        case "password":
+          change = { password: currInputValue };
+          break;
+        case "passwordConfirmation":
+          change = { passwordConfirmation: currInputValue };
+          break;
+      }
+      return Object.assign(prevState, change);
     });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const url = "";
+    const url = "http://localhost:5789/signup";
     const signupDetails = {
       username: this.state.username,
       password: this.state.password
@@ -34,13 +47,42 @@ class Signup extends Component {
       .post(url, signupDetails)
       .then(data => {
         console.log(data);
+        //TODO: Do a popup dialog showing success.  Then on click redirect to /login
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            username: "",
+            password: "",
+            passwordConfirmation: ""
+          };
+        });
       })
       .catch(e => {
+        //TODO: Do a popup dialog if username already taken.
         console.log(e);
       });
   };
 
+  handlePasswordVisibleClick = () => {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        isPasswordVisible: !prevState.isPasswordVisible
+      };
+    });
+  };
+
+  isFormSubmitValid = () => {
+    return false;
+  };
+
   render() {
+    const isPasswordVisible = this.state.isPasswordVisible
+      ? "text"
+      : "password";
+
+    const isSubmitValid = this.isFormSubmitValid();
+
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -48,28 +90,44 @@ class Signup extends Component {
             type="text"
             placeholder="username"
             name="username"
-            onChange={this.handleInputChange("username")}
+            onChange={this.handleInputChange}
             value={this.state.username}
           />
           <br />
           <input
-            type="password"
+            type={isPasswordVisible}
             placeholder="Enter your password."
             name="password"
-            onChange={this.handleInputChange("password")}
+            onChange={this.handleInputChange}
             value={this.state.password}
           />
           <br />
           <input
-            type="password"
+            type={isPasswordVisible}
             placeholder="Retype your password."
             name="passwordConfirmation"
-            onChange={this.handleInputChange("passwordConfirmation")}
+            onChange={this.handleInputChange}
             value={this.state.passwordConfirmation}
           />
+          <span>
+            <label htmlFor="passwordVisible">
+              <input
+                type="checkbox"
+                id="passwordVisible"
+                onClick={this.handlePasswordVisibleClick}
+              />
+              Password Visible
+            </label>
+          </span>
           <br />
           <div>Use at least 16 characters.</div>
-          <input type="submit" value="Signup" />
+          <button
+            type="submit"
+            disabled={!isSubmitValid}
+            onClick={this.handleSubmit}
+          >
+            Submit
+          </button>
         </form>
         <div>
           Already have an account? Login <Link to="/">here</Link>.

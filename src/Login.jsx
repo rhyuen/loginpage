@@ -79,7 +79,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <section>
         <Form
           onInputChange={this.handleInputChange}
           usernameValue={this.state.username}
@@ -89,7 +89,7 @@ class Login extends Component {
         <div>
           Forgot your password? Click <Link to="/forgot">Here</Link>
         </div>
-      </div>
+      </section>
     );
   }
 }
