@@ -1,5 +1,6 @@
 const path = require("path");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -17,6 +18,10 @@ module.exports = {
         }, {
             test: /\.json$/,
             loader: "json-loader"
+        }, {
+            test: /\.(png|jpg|gif)$/,
+            loader: "file-loader"
+
         }]
     },
     plugins: [
@@ -25,6 +30,17 @@ module.exports = {
             filename: "index.html",
             inject: "body",
             title: "auth clone"
+        }),
+        new CopyWebpackPlugin([{
+            from: "./src/images/*.ico",
+            flatten: true,
+            test: /\.(ico)$/,
+            ignore: ["*.jsx"],
+            toType: "file"
+
+        }], {
+            debug: "debug",
+            copyUnmodified: true
         })
     ]
 };
