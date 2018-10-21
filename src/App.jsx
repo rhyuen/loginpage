@@ -10,7 +10,7 @@ const App = () => {
     <div className="root">
       <Router>
         <div>
-          <h1>hi, guise. Cats are the best</h1>
+          <h1>hi, kindly auth yourself.</h1>
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/forgot" component={Forgot} />

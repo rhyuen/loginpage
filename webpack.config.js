@@ -9,12 +9,12 @@ module.exports = {
         path: path.join(__dirname, "public"),
         filename: "bundle.js"
     },
-    module:{
+    module: {
         loaders: [{
             test: /\.jsx$/,
             exclude: /node_modules/,
             loader: "babel-loader"
-        },{
+        }, {
             test: /\.json$/,
             loader: "json-loader"
         }]
@@ -24,7 +24,7 @@ module.exports = {
             template: path.join(__dirname, "src/templates/index.html"),
             filename: "index.html",
             inject: "body",
-            title: "Front End Boilerplate Project"
+            title: "auth clone"
         })
     ]
 };

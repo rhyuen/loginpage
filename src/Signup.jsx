@@ -57,9 +57,9 @@ class Signup extends Component {
           };
         });
       })
-      .catch(e => {
+      .catch(err => {
         //TODO: Do a popup dialog if username already taken.
-        console.log(e);
+        console.log(err.response.data);
       });
   };
 
@@ -73,7 +73,20 @@ class Signup extends Component {
   };
 
   isFormSubmitValid = () => {
-    return false;
+    const characterMin = 16;
+    const { username, password, passwordConfirmation } = this.state;
+    if (username === "" || password === "" || passwordConfirmation === "") {
+      return false;
+    } else if (
+      password.length < characterMin ||
+      passwordConfirmation < characterMin
+    ) {
+      return false;
+    } else if (password !== passwordConfirmation) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   render() {
@@ -85,52 +98,55 @@ class Signup extends Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="username"
-            name="username"
-            onChange={this.handleInputChange}
-            value={this.state.username}
-          />
-          <br />
-          <input
-            type={isPasswordVisible}
-            placeholder="Enter your password."
-            name="password"
-            onChange={this.handleInputChange}
-            value={this.state.password}
-          />
-          <br />
-          <input
-            type={isPasswordVisible}
-            placeholder="Retype your password."
-            name="passwordConfirmation"
-            onChange={this.handleInputChange}
-            value={this.state.passwordConfirmation}
-          />
-          <span>
-            <label htmlFor="passwordVisible">
-              <input
-                type="checkbox"
-                id="passwordVisible"
-                onClick={this.handlePasswordVisibleClick}
-              />
-              Password Visible
-            </label>
-          </span>
-          <br />
-          <div>Use at least 16 characters.</div>
-          <button
-            type="submit"
-            disabled={!isSubmitValid}
-            onClick={this.handleSubmit}
-          >
-            Submit
-          </button>
-        </form>
+        <div>Confirmation Modal</div>
         <div>
-          Already have an account? Login <Link to="/">here</Link>.
+          <form onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              placeholder="username"
+              name="username"
+              onChange={this.handleInputChange}
+              value={this.state.username}
+            />
+            <br />
+            <input
+              type={isPasswordVisible}
+              placeholder="Enter your password."
+              name="password"
+              onChange={this.handleInputChange}
+              value={this.state.password}
+            />
+            <br />
+            <input
+              type={isPasswordVisible}
+              placeholder="Retype your password."
+              name="passwordConfirmation"
+              onChange={this.handleInputChange}
+              value={this.state.passwordConfirmation}
+            />
+            <span>
+              <label htmlFor="passwordVisible">
+                <input
+                  type="checkbox"
+                  id="passwordVisible"
+                  onClick={this.handlePasswordVisibleClick}
+                />
+                Password Visible
+              </label>
+            </span>
+            <br />
+            <div>Use at least 16 characters.</div>
+            <button
+              type="submit"
+              disabled={!isSubmitValid}
+              onClick={this.handleSubmit}
+            >
+              Submit
+            </button>
+          </form>
+          <div>
+            Already have an account? Login <Link to="/">here</Link>.
+          </div>
         </div>
       </div>
     );
