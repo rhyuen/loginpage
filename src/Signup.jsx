@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Confirmation from "./SignupConfirmation.jsx";
+import Modal from "./Modal.jsx";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -45,21 +46,32 @@ class Signup extends Component {
     };
     axios
       .post(url, signupDetails)
-      .then(data => {
-        console.log(data);
-        //TODO: Do a popup dialog showing success.  Then on click redirect to /login
-        this.setState(prevState => {
-          return {
-            ...prevState,
-            username: "",
-            password: "",
-            passwordConfirmation: ""
-          };
-        });
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        if (res.status === 201) {
+          this.setState(prevState => {
+            return {
+              ...prevState,
+              username: "",
+              password: "",
+              passwordConfirmation: "",
+              isConfirmationVisible: true
+            };
+          });
+        }
       })
       .catch(err => {
-        //TODO: Do a popup dialog if username already taken.
         console.log(err.response.data);
+        if (err.response.status === 400) {
+          this.setState(prevState => {
+            return {
+              ...prevState,
+              username: "",
+              isUsernameDoubleVisible: true
+            };
+          });
+        }
       });
   };
 
@@ -73,7 +85,7 @@ class Signup extends Component {
   };
 
   isFormSubmitValid = () => {
-    const characterMin = 16;
+    const characterMin = 8;
     const { username, password, passwordConfirmation } = this.state;
     if (username === "" || password === "" || passwordConfirmation === "") {
       return false;
@@ -89,6 +101,16 @@ class Signup extends Component {
     }
   };
 
+  handleModalClose = () => {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        isUsernameDoubleVisible: false,
+        isConfirmationVisible: false
+      };
+    });
+  };
+
   render() {
     const isPasswordVisible = this.state.isPasswordVisible
       ? "text"
@@ -98,7 +120,18 @@ class Signup extends Component {
 
     return (
       <div>
-        <div>Confirmation Modal</div>
+        {this.state.isUsernameDoubleVisible ? (
+          <Modal>
+            <h1>That Username is already taken.</h1>
+            <button onClick={this.handleModalClose}>Close</button>
+          </Modal>
+        ) : null}
+        {this.state.isConfirmationVisible ? (
+          <Modal>
+            <h1>Your account has been created. Click here to login.</h1>
+            <button onClick={this.handleModalClose}>Close</button>
+          </Modal>
+        ) : null}
         <div>
           <form onSubmit={this.handleSubmit}>
             <input
@@ -135,7 +168,7 @@ class Signup extends Component {
               </label>
             </span>
             <br />
-            <div>Use at least 16 characters.</div>
+            <div>Use at least 8 characters.</div>
             <button
               type="submit"
               disabled={!isSubmitValid}

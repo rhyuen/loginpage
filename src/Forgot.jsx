@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import validator from "validator";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Modal from "./Modal.jsx";
 
 class Forgot extends Component {
   state = {
     email: "",
-    isConfirmationVisible: false
+    isInvalidEmail: false,
+    isEmailConfirmationVisible: false
   };
 
   handleChange = e => {
@@ -21,10 +24,23 @@ class Forgot extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    if (!validator.isEmail(this.state.email)) {
+      this.setState({ isInvalidEmail: true });
+    }
     this.setState(prevState => {
       return {
         ...prevState,
-        email: ""
+        email: "",
+        isEmailConfirmationVisible: true
+      };
+    });
+  };
+
+  handleModalClose = () => {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        isEmailConfirmationVisible: false
       };
     });
   };
@@ -32,6 +48,13 @@ class Forgot extends Component {
   render() {
     return (
       <div>
+        {this.state.isEmailConfirmationVisible ? (
+          <Modal>
+            <h1>An email with directions on what to do will arrive shortly.</h1>
+            <button onClick={this.handleModalClose}>Close</button>
+          </Modal>
+        ) : null}
+        {this.state.isInvalidEmail ? <h1>invalid email</h1> : null}
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
