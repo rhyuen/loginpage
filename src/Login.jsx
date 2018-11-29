@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import InfoText from "./InfoText.jsx";
 import Card from "./Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import StyledLink from "./StyledLink.jsx";
 import Form from "./Form.jsx";
 
 class Login extends Component {
@@ -88,9 +89,9 @@ class Login extends Component {
           passwordValue={this.state.password}
           onFormSubmit={this.handleFormSubmit}
         />
-        <p>
-          Forgot your password? Click <Link to="/forgot">Here</Link>
-        </p>
+        <InfoText>
+          Forgot your password? Click <StyledLink to="/forgot">Here</StyledLink>
+        </InfoText>
       </Card>
     );
   }

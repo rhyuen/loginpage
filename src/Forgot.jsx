@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import InfoText from "./InfoText.jsx";
+import FormButton from "./FormButton.jsx";
 import Card from "./Card.jsx";
 import validator from "validator";
 import TextInput from "./FormTextInput.jsx";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import StyledLink from "./StyledLink.jsx";
 import Modal from "./Modal.jsx";
 
 class Forgot extends Component {
@@ -57,7 +59,7 @@ class Forgot extends Component {
             <Link to="/">Go back to login</Link>
           </Modal>
         ) : null}
-        {this.state.isInvalidEmail ? <h1>invalid email</h1> : null}
+
         <h1>Account Recovery</h1>
         <form onSubmit={this.handleSubmit}>
           <TextInput
@@ -68,11 +70,15 @@ class Forgot extends Component {
             name="email"
           />
           <br />
-          <input type="submit" value="Submit" />
+          {this.state.isInvalidEmail ? (
+            <InfoText>The above is not a valid email address.</InfoText>
+          ) : null}
+          <FormButton type="submit" value="Submit" />
         </form>
-        <div>
-          I had an <Link to="/">epiphany</Link> (I remembered my credentials).
-        </div>
+        <InfoText>
+          I had an <StyledLink to="/">Epiphany</StyledLink> (I remembered my
+          credentials).
+        </InfoText>
       </Card>
     );
   }

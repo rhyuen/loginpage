@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import StyledLink from "./StyledLink.jsx";
+import InfoText from "./InfoText.jsx";
+import FormButton from "./FormButton.jsx";
 import TextInput from "./FormTextInput.jsx";
 
 export default ({
@@ -29,11 +30,11 @@ export default ({
           value={passwordValue}
         />
       </div>
+      <InfoText>
+        Not a user yet? Sign up <StyledLink to="/signup">Here</StyledLink>.
+      </InfoText>
       <div>
-        Not a user yet? Sign up <Link to="/signup">here</Link>.
-      </div>
-      <div>
-        <input type="submit" value="Login" />
+        <FormButton type="submit" value="Login" />
       </div>
     </form>
   );

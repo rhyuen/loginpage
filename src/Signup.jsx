@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 import Card from "./Card.jsx";
+import FormButton from "./FormButton.jsx";
 import TextInput from "./FormTextInput.jsx";
+import InfoText from "./InfoText.jsx";
 import Modal from "./Modal.jsx";
 import { Link } from "react-router-dom";
+import StyledLink from "./StyledLink.jsx";
 import axios from "axios";
 
 class Signup extends Component {
@@ -127,6 +129,7 @@ class Signup extends Component {
             <button onClick={this.handleModalClose}>Close</button>
           </Modal>
         ) : null}
+
         {this.state.isConfirmationVisible ? (
           <Modal>
             <h1>Your account has been created.</h1>
@@ -136,6 +139,7 @@ class Signup extends Component {
             </h2>
           </Modal>
         ) : null}
+
         <div>
           <h1>Signup</h1>
           <form onSubmit={this.handleSubmit}>
@@ -173,18 +177,19 @@ class Signup extends Component {
               </label>
             </span>
             <br />
-            <div>Use at least 8 characters.</div>
-            <button
+            <InfoText>
+              Use at least <strong>8 characters</strong>.
+            </InfoText>
+            <FormButton
               type="submit"
+              value="Signup"
               disabled={!isSubmitValid}
               onClick={this.handleSubmit}
-            >
-              Submit
-            </button>
+            />
           </form>
-          <p>
-            Already have an account? Login <Link to="/">here</Link>.
-          </p>
+          <InfoText>
+            Already have an account? Login <StyledLink to="/">here</StyledLink>.
+          </InfoText>
         </div>
       </Card>
     );
