@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import TextInput from "./FormTextInput.jsx";
 
 export default ({
   onFormSubmit,
@@ -11,7 +12,7 @@ export default ({
   return (
     <form onSubmit={onFormSubmit}>
       <div>
-        <input
+        <TextInput
           type="text"
           placeholder="Username"
           name="username"
@@ -20,7 +21,7 @@ export default ({
         />
       </div>
       <div>
-        <input
+        <TextInput
           type="text"
           placeholder="Password"
           name="password"

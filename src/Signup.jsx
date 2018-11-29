@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Confirmation from "./SignupConfirmation.jsx";
+import Card from "./Card.jsx";
+import TextInput from "./FormTextInput.jsx";
 import Modal from "./Modal.jsx";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -119,7 +120,7 @@ class Signup extends Component {
     const isSubmitValid = this.isFormSubmitValid();
 
     return (
-      <div>
+      <Card>
         {this.state.isUsernameDoubleVisible ? (
           <Modal>
             <h1>That Username is already taken.</h1>
@@ -128,21 +129,25 @@ class Signup extends Component {
         ) : null}
         {this.state.isConfirmationVisible ? (
           <Modal>
-            <h1>Your account has been created. Click here to login.</h1>
+            <h1>Your account has been created.</h1>
             <button onClick={this.handleModalClose}>Close</button>
+            <h2>
+              Click <Link to="/">here</Link> to login.
+            </h2>
           </Modal>
         ) : null}
         <div>
+          <h1>Signup</h1>
           <form onSubmit={this.handleSubmit}>
-            <input
+            <TextInput
               type="text"
-              placeholder="username"
+              placeholder="Enter your preferred username."
               name="username"
               onChange={this.handleInputChange}
               value={this.state.username}
             />
             <br />
-            <input
+            <TextInput
               type={isPasswordVisible}
               placeholder="Enter your password."
               name="password"
@@ -150,7 +155,7 @@ class Signup extends Component {
               value={this.state.password}
             />
             <br />
-            <input
+            <TextInput
               type={isPasswordVisible}
               placeholder="Retype your password."
               name="passwordConfirmation"
@@ -177,11 +182,11 @@ class Signup extends Component {
               Submit
             </button>
           </form>
-          <div>
+          <p>
             Already have an account? Login <Link to="/">here</Link>.
-          </div>
+          </p>
         </div>
-      </div>
+      </Card>
     );
   }
 }

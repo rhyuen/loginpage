@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Card from "./Card.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Form from "./Form.jsx";
@@ -79,17 +80,18 @@ class Login extends Component {
 
   render() {
     return (
-      <section>
+      <Card>
+        <h1>Login</h1>
         <Form
           onInputChange={this.handleInputChange}
           usernameValue={this.state.username}
           passwordValue={this.state.password}
           onFormSubmit={this.handleFormSubmit}
         />
-        <div>
+        <p>
           Forgot your password? Click <Link to="/forgot">Here</Link>
-        </div>
-      </section>
+        </p>
+      </Card>
     );
   }
 }

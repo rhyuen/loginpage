@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Card from "./Card.jsx";
 import validator from "validator";
-import { Link } from "react-router-dom";
+import TextInput from "./FormTextInput.jsx";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import Modal from "./Modal.jsx";
 
@@ -25,7 +27,7 @@ class Forgot extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (!validator.isEmail(this.state.email)) {
-      this.setState({ isInvalidEmail: true });
+      return this.setState({ isInvalidEmail: true });
     }
     this.setState(prevState => {
       return {
@@ -47,18 +49,20 @@ class Forgot extends Component {
 
   render() {
     return (
-      <div>
+      <Card>
         {this.state.isEmailConfirmationVisible ? (
           <Modal>
             <h1>An email with directions on what to do will arrive shortly.</h1>
             <button onClick={this.handleModalClose}>Close</button>
+            <Link to="/">Go back to login</Link>
           </Modal>
         ) : null}
         {this.state.isInvalidEmail ? <h1>invalid email</h1> : null}
+        <h1>Account Recovery</h1>
         <form onSubmit={this.handleSubmit}>
-          <input
+          <TextInput
             type="text"
-            placeholder="email address"
+            placeholder="Enter your email address."
             onChange={this.handleChange}
             value={this.state.email}
             name="email"
@@ -67,13 +71,9 @@ class Forgot extends Component {
           <input type="submit" value="Submit" />
         </form>
         <div>
-          I had an <Link to="/">epiphany</Link>.
+          I had an <Link to="/">epiphany</Link> (I remembered my credentials).
         </div>
-        <div>
-          TODO: Add email validation. TODO: You should ad a confirmation box
-          here and redirect to the login page.
-        </div>
-      </div>
+      </Card>
     );
   }
 }
